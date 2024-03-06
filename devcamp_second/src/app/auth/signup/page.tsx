@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
 import {
   Card,
   CardContent,
@@ -31,7 +30,6 @@ import { userSchema } from '@/validators/user/userSchema';
 export default function Signup() {
   type UserSchema = z.infer<typeof userSchema>;
 
-  const { toast } = useToast();
   const [stage, setStage] = useState(0);
   const [isEmailValid, setIsEmailValid] = useState(false);
 
@@ -55,7 +53,8 @@ export default function Signup() {
     };
 
     checkPasswordMatch();
-  }, [password, confirmPassword, form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [password, confirmPassword]);
 
   const onClickNextButton = async () => {
     setIsEmailValid(await form.trigger('email'));
