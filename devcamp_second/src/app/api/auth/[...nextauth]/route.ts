@@ -60,7 +60,6 @@ export const authOptions = {
     },
     session: async ({ token, session }: any) => {
       session.user = token.user;
-      session.RefreshToken = token.refreshToken;
       return session;
     },
   },
