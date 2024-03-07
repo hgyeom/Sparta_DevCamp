@@ -2,12 +2,14 @@
 import { z } from 'zod';
 
 import { cn } from '@/lib/utils';
-import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import {
   Card,
   CardContent,
@@ -26,9 +28,14 @@ import {
 } from '@/components/ui/form';
 
 import { userSchema } from '@/validators/user/userSchema';
+import { handler } from '@/app/api/auth/signup';
 
 export default function Signup() {
+  const router = useRouter();
+
   type UserSchema = z.infer<typeof userSchema>;
+
+  const { toast } = useToast();
 
   const [stage, setStage] = useState(0);
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -65,7 +72,16 @@ export default function Signup() {
     await form.trigger(['password', 'confirmPassword']);
 
     if (data.password === data.confirmPassword) {
-      alert(JSON.stringify(data, null, 4));
+      try {
+        await handler(data);
+        toast({
+          description: '어서오세요! 가입을 축하드립니다!',
+          duration: 1500,
+        });
+        router.push('/auth/signin');
+      } catch (error) {
+        console.error('회원가입 오류', error);
+      }
     }
   };
 
@@ -89,6 +105,7 @@ export default function Signup() {
 
         <Form {...form}>
           <form
+            method="post"
             onSubmit={form.handleSubmit(onSubmit)}
             className="relative space-y-3 overflow-x-hidden"
           >

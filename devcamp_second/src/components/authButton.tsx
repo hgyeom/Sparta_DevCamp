@@ -5,7 +5,6 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button } from './ui/button';
 export default function AuthButtons() {
   const { data: session } = useSession();
-
   const onClick = async (e: React.MouseEvent) => {
     e.preventDefault();
 
@@ -18,6 +17,11 @@ export default function AuthButtons() {
 
   return (
     <div className="flex justify-end gap-4">
+      {session && (
+        <span>
+          {session.user?.name ? session.user.name : session.user?.email}
+        </span>
+      )}
       <Button size={'sm'} variant={'default'} onClick={onClick}>
         {session ? '로그아웃' : '로그인'}
       </Button>

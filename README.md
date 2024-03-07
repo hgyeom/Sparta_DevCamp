@@ -2,8 +2,7 @@
 
 devcamp : 1, 2일차 과제
 
-  
-devcamp_second : 3일차 이후의 과제. 
+devcamp_second : 3일차 이후의 과제.
 
 1. react hook form
 2. shadcn/ui
@@ -12,3 +11,4 @@ devcamp_second : 3일차 이후의 과제.
 5. eslint
 6. typescript
 7. next-auth
+8. json-server
