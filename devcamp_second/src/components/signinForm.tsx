@@ -44,13 +44,12 @@ export default function SigninForm({ providers }: IProps) {
       email: data.email,
       password: data.password,
       redirect: false,
-      callbackUrl: '/',
     }).then((result) => {
+      // console.log(result);
       if (result!.error) {
         alert('이메일 또는 비밀번호가 다릅니다.');
         return;
       }
-      router.push('/');
     });
   };
 
