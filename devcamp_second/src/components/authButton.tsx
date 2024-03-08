@@ -3,8 +3,14 @@
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button } from './ui/button';
-export default function AuthButtons() {
+
+interface AuthProps {
+  isLogin: boolean;
+}
+
+export default function AuthButtons({ isLogin }: AuthProps) {
   const { data: session } = useSession();
+
   const onClick = async (e: React.MouseEvent) => {
     e.preventDefault();
 
@@ -17,15 +23,19 @@ export default function AuthButtons() {
 
   return (
     <div className="flex justify-end gap-4">
-      {session && (
+      {isLogin && (
         <span>
-          {session.user?.name ? session.user.name : session.user?.email}
+          {session
+            ? session.user?.name
+              ? session.user.name
+              : session.user?.email
+            : '로그인 중입니다.'}
         </span>
       )}
       <Button size={'sm'} variant={'default'} onClick={onClick}>
-        {session ? '로그아웃' : '로그인'}
+        {isLogin ? '로그아웃' : '로그인'}
       </Button>
-      {!session && (
+      {!isLogin && (
         <Button size={'sm'} variant={'default'}>
           <Link href="/auth/signup">회원가입</Link>
         </Button>
