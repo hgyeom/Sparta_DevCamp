@@ -3,7 +3,7 @@ import KakaoProvider from 'next-auth/providers/kakao';
 import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-const API_BASE_URL = 'http://localhost:5000'; // JSON Server주소
+const API_BASE_URL = process.env.JSON_SERVER_URL; // JSON Server주소
 // import NaverProvider from 'next-auth/providers/naver';
 // import GoogleProvider from 'next-auth/providers/google';
 
@@ -25,7 +25,9 @@ export const authOptions = {
       },
       async authorize(credentials) {
         const response = await fetch(
-          `${API_BASE_URL}/users?email=${credentials?.email}&password=${credentials?.password}`,
+          `${API_BASE_URL}/users?email=${credentials!.email}&password=${
+            credentials!.password
+          }`,
           {
             method: 'GET',
           }
@@ -43,8 +45,9 @@ export const authOptions = {
   pages: {
     signIn: '/auth/signin',
   },
+
   callbacks: {
-    jwt: async ({ token, user }: any) => {
+    jwt: async ({ token, account, user }: any) => {
       if (user && user.name) {
         token.user = {
           name: user.name,
@@ -59,7 +62,9 @@ export const authOptions = {
       return token;
     },
     session: async ({ token, session }: any) => {
+      console.log(token);
       session.user = token.user;
+      console.log(session);
       return session;
     },
   },

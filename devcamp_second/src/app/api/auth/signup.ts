@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000'; // JSON Server주소
+const API_BASE_URL = process.env.JSON_SERVER_URL; // JSON Server주소
 
 export const handler = async (userData: any) => {
   const data = {

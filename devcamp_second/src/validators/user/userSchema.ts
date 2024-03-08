@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const API_BASE_URL = 'http://localhost:5000'; // json-server 주소
+const API_BASE_URL = process.env.JSON_SERVER_URL; // json-server 주소
 
 const checkEmailDuplicate = async (email: string) => {
   try {
